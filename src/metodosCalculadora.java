@@ -1,5 +1,6 @@
 
 
+import java.util.ArrayList;
 import pilas.PilaA;
 
 
@@ -43,12 +44,24 @@ public class metodosCalculadora {
         }
         while(i<n&&valido){
             if(cadena.charAt(i)=='+'||cadena.charAt(i)=='('||cadena.charAt(i)=='*'||cadena.charAt(i)=='-'||cadena.charAt(i)=='/'||cadena.charAt(i)=='^'){
-                if(cadena.charAt(i+1)=='+'||cadena.charAt(i+1)==')'||cadena.charAt(i+1)=='*'||cadena.charAt(i+1)=='-'||cadena.charAt(i+1)=='/'||cadena.charAt(i+1)=='^'){;
+                if(cadena.charAt(i+1)=='+'||cadena.charAt(i+1)==')'||cadena.charAt(i+1)=='*'||cadena.charAt(i+1)=='-'||cadena.charAt(i+1)=='/'||cadena.charAt(i+1)=='^'){
                     valido=false;
+                }
+            }
+            else{
+                if(cadena.charAt(i)=='.'||cadena.charAt(i)=='$'){
+                    if(cadena.charAt(i+1)=='+'||cadena.charAt(i+1)==')'||cadena.charAt(i+1)=='*'||cadena.charAt(i+1)=='-'||cadena.charAt(i+1)=='/'||cadena.charAt(i+1)=='^'||cadena.charAt(i+1)=='('){
+                        valido=false;
+                    }
                 }
             }
             i++;
         }
         return valido;
     } 
+    public static ArrayList<String> convertirPostfija(String cadena){
+        ArrayList<String> postfija =new ArrayList<String>();
+        
+        return postfija;
+    }
 }

@@ -61,7 +61,13 @@ public class metodosCalculadora {
     } 
     public static ArrayList<String> convertirPostfija(String cadena){
         ArrayList<String> postfija =new ArrayList<String>();
+        int i=0,n=cadena.length();
         
+        
+        while(i<n){
+            
+            i++;
+        }
         return postfija;
     }
 }

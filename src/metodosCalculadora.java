@@ -59,15 +59,84 @@ public class metodosCalculadora {
         }
         return valido;
     } 
+    
     public static ArrayList<String> convertirPostfija(String cadena){
         ArrayList<String> postfija =new ArrayList();
         int i=0,n=cadena.length();
-        PilaA <String> pilaSignos = new PilaA();
-        
+        PilaA <Character> pilaSignos = new PilaA();
+        StringBuilder sb = new StringBuilder();
+        char c;
+
         
         while(i<n){
-            
+            if(cadena.charAt(i)=='('){
+                pilaSignos.push('(');
+                postfija.add(sb.toString());
+                sb = new StringBuilder();
+            }
+            else{
+                if(cadena.charAt(i)=='^'){
+                    pilaSignos.push('^');
+                    postfija.add(sb.toString());
+                    sb = new StringBuilder();
+                }
+                else{
+                    if(cadena.charAt(i)=='*'||cadena.charAt(i)=='/'){
+                        postfija.add(sb.toString());
+                        sb = new StringBuilder();
+                        try{
+                           while(pilaSignos.peek()=='^'){
+                               c=pilaSignos.pop();
+                               postfija.add(String.valueOf(c));
+                           } 
+                           pilaSignos.push(cadena.charAt(i));
+                        }catch(Exception e){
+                           pilaSignos.push(cadena.charAt(i));
+                        }
+                    }
+                    else{
+                        if(cadena.charAt(i)=='+'||cadena.charAt(i)=='-'){
+                            postfija.add(sb.toString());
+                            sb = new StringBuilder();
+                            try{
+                                while(pilaSignos.peek()=='^'||pilaSignos.peek()=='*'||pilaSignos.peek()=='/'){
+                                    c=pilaSignos.pop();
+                                    postfija.add(String.valueOf(c));
+                                }
+                                pilaSignos.push(cadena.charAt(i));
+                            }
+                            catch(Exception e){
+                                pilaSignos.push(cadena.charAt(i));
+                            }
+                        }
+                        else{
+                            if(cadena.charAt(i)==')'){
+                                postfija.add(sb.toString());
+                                sb = new StringBuilder();
+                                while(pilaSignos.peek()!='('){
+                                    c=pilaSignos.pop();
+                                    postfija.add(String.valueOf(c));
+                                }
+                                pilaSignos.pop();
+                            }
+                            else{
+                                sb.append(cadena.charAt(i));
+                            }
+                        }
+                    }
+                }
+            }
             i++;
+        }
+        postfija.add(sb.toString());
+        while(!pilaSignos.isEmpty()){
+            c=pilaSignos.pop();
+            postfija.add(String.valueOf(c));
+        }
+        for(int j=0;j<postfija.size();j++){
+            if(postfija.get(j).equals("")){
+                postfija.remove(j);
+            }
         }
         return postfija;
     }

@@ -60,8 +60,9 @@ public class metodosCalculadora {
         return valido;
     } 
     public static ArrayList<String> convertirPostfija(String cadena){
-        ArrayList<String> postfija =new ArrayList<String>();
+        ArrayList<String> postfija =new ArrayList();
         int i=0,n=cadena.length();
+        PilaA <String> pilaSignos = new PilaA();
         
         
         while(i<n){

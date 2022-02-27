@@ -480,6 +480,7 @@ public class Calculadora extends javax.swing.JFrame {
         else{
             cadena=""+res;
             cadenaMetodos=""+res;
+            cadenaMetodos=cadenaMetodos.replace('-', '$');
             resultadosTF.setText(cadena);
         }
     }//GEN-LAST:event_igualBTActionPerformed

@@ -50,15 +50,30 @@ public class metodosCalculadora {
             }
         }
         while(i<n&&valido){
-            if(cadena.charAt(i)=='+'||cadena.charAt(i)=='('||cadena.charAt(i)=='*'||cadena.charAt(i)=='-'||cadena.charAt(i)=='/'||cadena.charAt(i)=='^'){
+            if(cadena.charAt(i)=='+'||cadena.charAt(i)=='*'||cadena.charAt(i)=='-'||cadena.charAt(i)=='/'||cadena.charAt(i)=='^'){
                 if(cadena.charAt(i+1)=='+'||cadena.charAt(i+1)==')'||cadena.charAt(i+1)=='*'||cadena.charAt(i+1)=='-'||cadena.charAt(i+1)=='/'||cadena.charAt(i+1)=='^'){
                     valido=false;
                 }
+                
             }
             else{
                 if(cadena.charAt(i)=='.'||cadena.charAt(i)=='$'){
                     if(cadena.charAt(i+1)=='+'||cadena.charAt(i+1)==')'||cadena.charAt(i+1)=='*'||cadena.charAt(i+1)=='-'||cadena.charAt(i+1)=='/'||cadena.charAt(i+1)=='^'||cadena.charAt(i+1)=='('){
                         valido=false;
+                    }
+                }
+                else{
+                    if(i>=1&&cadena.charAt(i)=='('){
+                        if(cadena.charAt(i+1)=='+'||cadena.charAt(i+1)==')'||cadena.charAt(i+1)=='*'||cadena.charAt(i+1)=='-'||cadena.charAt(i+1)=='/'||cadena.charAt(i+1)=='^'||cadena.charAt(i-1)=='0'||cadena.charAt(i-1)=='1'||cadena.charAt(i-1)=='2'||cadena.charAt(i-1)=='3'||cadena.charAt(i-1)=='4'||cadena.charAt(i-1)=='5'||cadena.charAt(i-1)=='6'||cadena.charAt(i-1)=='7'||cadena.charAt(i-1)=='8'||cadena.charAt(i-1)=='9'){
+                            valido=false;
+                        }
+                    }
+                    else{
+                        if(i<n-1&&cadena.charAt(i)==')'){
+                            if(cadena.charAt(i+1)=='0'||cadena.charAt(i+1)=='1'||cadena.charAt(i+1)=='2'||cadena.charAt(i+1)=='3'||cadena.charAt(i+1)=='4'||cadena.charAt(i+1)=='5'||cadena.charAt(i+1)=='6'||cadena.charAt(i+1)=='7'||cadena.charAt(i+1)=='8'||cadena.charAt(i+1)=='9'||cadena.charAt(i+1)=='$'||cadena.charAt(i+1)=='.'){
+                                valido=false;
+                            }
+                        }
                     }
                 }
             }
@@ -88,11 +103,11 @@ public class metodosCalculadora {
                     sb = new StringBuilder();
                 }
                 else{
-                    if(cadena.charAt(i)=='*'||cadena.charAt(i)=='/'){
+                    if(cadena.charAt(i)=='/'||cadena.charAt(i)=='*'){
                         postfija.add(sb.toString());
                         sb = new StringBuilder();
                         try{
-                           while(pilaSignos.peek()=='^'){
+                           while(pilaSignos.peek()=='^'||pilaSignos.peek()=='/'){
                                c=pilaSignos.pop();
                                postfija.add(String.valueOf(c));
                            } 
@@ -102,11 +117,11 @@ public class metodosCalculadora {
                         }
                     }
                     else{
-                        if(cadena.charAt(i)=='-'){
+                        if(cadena.charAt(i)=='-'||cadena.charAt(i)=='+'){
                             postfija.add(sb.toString());
                             sb = new StringBuilder();
                             try{
-                                while(pilaSignos.peek()=='^'||pilaSignos.peek()=='*'||pilaSignos.peek()=='/'){
+                                while(pilaSignos.peek()=='^'||pilaSignos.peek()=='*'||pilaSignos.peek()=='/'||pilaSignos.peek()=='-'){
                                     c=pilaSignos.pop();
                                     postfija.add(String.valueOf(c));
                                 }
@@ -117,7 +132,7 @@ public class metodosCalculadora {
                             }
                         }
                         else{
-                            if(cadena.charAt(i)=='+'){
+                            /*if(cadena.charAt(i)=='+'){
                                 postfija.add(sb.toString());
                                 sb = new StringBuilder();
                                 try{
@@ -130,7 +145,7 @@ public class metodosCalculadora {
                                     pilaSignos.push(cadena.charAt(i));
                                 }
                             }
-                            else{
+                            else{*/
                                 if(cadena.charAt(i)==')'){
                                     postfija.add(sb.toString());
                                     sb = new StringBuilder();
@@ -143,7 +158,7 @@ public class metodosCalculadora {
                                 else{
                                     sb.append(cadena.charAt(i));
                                 }
-                            }
+                            //}
                         }
                     }
                 }

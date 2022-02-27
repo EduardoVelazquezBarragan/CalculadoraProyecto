@@ -36,11 +36,18 @@ public class metodosCalculadora {
         int i=0, n;
         
         n=cadena.length();
-        if(n>0&&(cadena.charAt(0)=='-'||cadena.charAt(0)=='+'||cadena.charAt(0)=='/'||cadena.charAt(0)=='*'||cadena.charAt(0)=='^')){
+        if(n==0||cadena.contains(")(")){
             valido=false;
         }
-        if(n>0&&(cadena.charAt(n-1)=='-'||cadena.charAt(n-1)=='+'||cadena.charAt(n-1)=='/'||cadena.charAt(n-1)=='*'||cadena.charAt(n-1)=='^'||cadena.charAt(n-1)=='.'||cadena.charAt(n-1)=='$')){
-            valido=false;
+        else{
+            if(cadena.charAt(0)=='-'||cadena.charAt(0)=='+'||cadena.charAt(0)=='/'||cadena.charAt(0)=='*'||cadena.charAt(0)=='^'){
+                valido=false;
+            }
+            else{
+                if(cadena.charAt(n-1)=='-'||cadena.charAt(n-1)=='+'||cadena.charAt(n-1)=='/'||cadena.charAt(n-1)=='*'||cadena.charAt(n-1)=='^'||cadena.charAt(n-1)=='.'||cadena.charAt(n-1)=='$'){
+                    valido=false;
+                }
+            }
         }
         while(i<n&&valido){
             if(cadena.charAt(i)=='+'||cadena.charAt(i)=='('||cadena.charAt(i)=='*'||cadena.charAt(i)=='-'||cadena.charAt(i)=='/'||cadena.charAt(i)=='^'){
@@ -95,7 +102,7 @@ public class metodosCalculadora {
                         }
                     }
                     else{
-                        if(cadena.charAt(i)=='+'||cadena.charAt(i)=='-'){
+                        if(cadena.charAt(i)=='-'){
                             postfija.add(sb.toString());
                             sb = new StringBuilder();
                             try{
@@ -110,17 +117,32 @@ public class metodosCalculadora {
                             }
                         }
                         else{
-                            if(cadena.charAt(i)==')'){
+                            if(cadena.charAt(i)=='+'){
                                 postfija.add(sb.toString());
                                 sb = new StringBuilder();
-                                while(pilaSignos.peek()!='('){
-                                    c=pilaSignos.pop();
-                                    postfija.add(String.valueOf(c));
+                                try{
+                                    while(pilaSignos.peek()=='^'||pilaSignos.peek()=='*'||pilaSignos.peek()=='/'||pilaSignos.peek()=='-'){
+                                        c=pilaSignos.pop();
+                                        postfija.add(String.valueOf(c));
+                                    }
+                                    pilaSignos.push(cadena.charAt(i));
+                                }catch(Exception e){
+                                    pilaSignos.push(cadena.charAt(i));
                                 }
-                                pilaSignos.pop();
                             }
                             else{
-                                sb.append(cadena.charAt(i));
+                                if(cadena.charAt(i)==')'){
+                                    postfija.add(sb.toString());
+                                    sb = new StringBuilder();
+                                    while(pilaSignos.peek()!='('){
+                                        c=pilaSignos.pop();
+                                        postfija.add(String.valueOf(c));
+                                    }
+                                    pilaSignos.pop();
+                                }
+                                else{
+                                    sb.append(cadena.charAt(i));
+                                }
                             }
                         }
                     }
@@ -136,8 +158,63 @@ public class metodosCalculadora {
         for(int j=0;j<postfija.size();j++){
             if(postfija.get(j).equals("")){
                 postfija.remove(j);
+                j--;
             }
         }
         return postfija;
+    }
+    public static double evalua(ArrayList<String> postfija){
+        PilaA<Double> pila = new PilaA();
+        double x1,x2, temp;
+        String valor;
+        
+        for(int i=0; i<postfija.size();i++){
+            if(postfija.get(i).equals("+")){
+                x1=pila.pop();
+                x2=pila.pop();
+                temp=x1+x2;
+                pila.push(temp);
+            }
+            else{
+                 if(postfija.get(i).equals("*")){
+                    x1=pila.pop();
+                    x2=pila.pop();
+                    temp=x1*x2;
+                    pila.push(temp);
+                }
+                else{
+                     if(postfija.get(i).equals("/")){
+                        x1=pila.pop();
+                        x2=pila.pop();
+                        temp=x2/x1;
+                        pila.push(temp);
+                    }
+                     else{
+                         if(postfija.get(i).equals("-")){
+                             x1=pila.pop();
+                             x2=pila.pop();
+                             temp=x2-x1;
+                             pila.push(temp);
+                         }
+                         else{
+                           if(postfija.get(i).equals("^")){
+                             x1=pila.pop();
+                             x2=pila.pop();
+                             temp=Math.pow(x2, x1);
+                             pila.push(temp);
+                           }
+                           else{
+                              valor=postfija.get(i);
+                              valor=valor.replace('$', '-');
+                              temp=Double.parseDouble(valor);
+                              pila.push(temp);
+                           }
+                        }
+                    }
+                }
+            }
+        }
+        temp=pila.pop();
+        return temp;
     }
 }

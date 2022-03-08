@@ -1,4 +1,8 @@
 
+import static java.lang.Double.NaN;
+import java.util.ArrayList;
+
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -449,6 +453,36 @@ public class Calculadora extends javax.swing.JFrame {
 
     private void igualBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_igualBTActionPerformed
         boolean valido;
+        ArrayList<String> postfija= new ArrayList();
+        double res=0;
+             
+        valido=metodosCalculadora.estaBalanceado(cadenaMetodos);
+        if(valido){
+            //System.out.println("1");
+            valido=metodosCalculadora.cadenaCorrecta(cadenaMetodos);
+            if(valido){
+                //System.out.println("2");
+                postfija=metodosCalculadora.convertirPostfija(cadenaMetodos);
+                try{
+                    res=metodosCalculadora.evalua(postfija);
+                }
+                catch(Exception e){
+                    //System.out.println("3");
+                    valido=false;
+                }   
+            }
+        }
+        if(!valido||res==NaN){
+            cadena="";
+            cadenaMetodos="";
+            resultadosTF.setText("No podemos resolver el problema planteado.");
+        }
+        else{
+            cadena=""+res;
+            cadenaMetodos=""+res;
+            cadenaMetodos=cadenaMetodos.replace('-', '$');
+            resultadosTF.setText(cadena);
+        }
     }//GEN-LAST:event_igualBTActionPerformed
     
     /**
